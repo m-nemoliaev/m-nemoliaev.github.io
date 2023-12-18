@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget Matters?</title>
+  <!-- Include D3.js library -->
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #e0f7fa;
+    }
+
+    #question-container {
+      margin-bottom: 20px;
+    }
+
+    #visualization-container {
+      width: 100%;
+      overflow-x: auto; /* Enable horizontal scrolling if images exceed the container width */
+      white-space: nowrap; /* Prevent images from wrapping to the next line */
+      margin-bottom: 20px;
+    }
+
+    #visualization-container img {
+      width: 200px; /* Adjust the width based on your preference */
+      height: auto; /* Maintain the aspect ratio */
+      margin-right: 10px; /* Adjust the spacing between images */
+    }
+
+    #answer-container {
+      display: none;
+      margin-bottom: 20px;
+      background-color: #e0f7fa;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Style for the Toggle Images button */
+    #toggleButton {
+      cursor: pointer;
+      padding: 10px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    /* Style for the Hover for Answer button */
+    #revealAnswerButton {
+      display: none;
+      cursor: pointer;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      transition: opacity 0.5s ease; /* Smooth transition effect */
+    }
+
+    #revealAnswerButton.show {
+      opacity: 1;
+    }
+    #marginslandr {
+      margin-left: 200px;
+      margin-right: 200px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div id="question-container">
+    <h1>Is there a direct relationship between budget and popularity of a film?</h1>
+    <p id="marginslandr">
+        Ever wondered about a correlation of film budget and popularity? At first glance you may assume that these two factors are unrelated, 
+        however there are other factors that are in close association with budget. These prime factors are crew, special effects and equipment; 
+        all of those are potentially a game-changer for a film’s success. Join us on a journey to unravel the intricate ties between budgetary 
+        investments and cinematic acclaim.
+    </p>
+  </div>
+
+  <div id="visualization-container">
+    <!-- Images will be appended here dynamically -->
+  </div>
+
+  <div>
+    <p id="marginslandr">
+        In my research I analyzed the following <a href="https://www.kaggle.com/datasets/utkarshx27/movies-dataset"><b>dataset</b></a> 
+        and came to some insteresting discoveries, for example on first visualization there is a slight relationship - as budget grows
+        popularity grows as well; however, it grows really slow. 
+    </p>
+    <p id="marginslandr">
+        As for second image, the highest rated film was a "0 budget", but there is very definitife curve line, that shows that many
+        films with higher budgets have a smaller range of ratings.
+    </p>
+    <p id="marginslandr">
+        
+    </p>
+  </div>
+  <!-- Button to toggle image visibility -->
+  <button id="toggleButton">Toggle Images</button>
+
+  <div id="answer-container">
+    <p id="marginslandr">
+        Opposedly to the common belief that a larger budget ensures a film’s popularity, the connection between a film’s popularity, 
+        the connection between a film’s budget and its success is more intricate. Elements such as marketing, storytelling, plot and 
+        audience engagement are crucial factors that challenge the notion that a higher budget always results in a greater popularity. 
+    </p>
+    <h2>And the answer is hazy.</h2>
+    <p>Technically there is some relationship between popularity and budget, on the other hand it is completely random.</p>
+  </div>
+
+
+  <!-- New button to reveal answer on hover -->
+  <button id="revealAnswerButton">Hover for Answer</button>
+
+  <script>
+    // Example JavaScript code for image toggling
+    document.getElementById('toggleButton').addEventListener('click', function() {
+      toggleImages();
+      showRevealAnswerButton();
+    });
+
+    function toggleImages() {
+      console.log("Button clicked");
+
+      // Select the visualization container
+      var visualizationContainer = d3.select('#visualization-container');
+
+      // Toggle image visibility directly
+      visualizationContainer.selectAll('img')
+        .classed('hidden', function() {
+          return !d3.select(this).classed('hidden');
+        });
+
+      d3.select('#toggleButton').style('display', 'none');
+    }
+
+    // Example code to dynamically append images to the visualization container
+    var imagePaths = ['image1.png', 'image2.png', 'image3.png'];
+
+    d3.select('#visualization-container')
+      .selectAll('img')
+      .data(imagePaths)
+      .enter()
+      .append('img')
+      .attr('src', function(d) { return d; })
+      .attr('class', 'hidden'); // Initially hide images
+
+    // Example JavaScript code for revealing the answer on hover
+    document.getElementById('revealAnswerButton').addEventListener('mouseover', revealAnswer);
+
+    function revealAnswer() {
+      // Display the answer container
+      d3.select('#answer-container').style('display', 'block');
+    }
+
+    // Show the "Hover for Answer" button after the first button is pressed
+    function showRevealAnswerButton() {
+      var revealAnswerButton = d3.select('#revealAnswerButton');
+      revealAnswerButton.style('display', 'inline-block');
+
+      // Trigger reflow to enable the transition effect
+      void revealAnswerButton.node().offsetWidth;
+
+      // Apply the 'show' class to initiate the opacity transition
+      revealAnswerButton.classed('show', true);
+    }
+  </script>
+
+</body>
+</html>
